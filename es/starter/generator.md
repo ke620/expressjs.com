@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Generador de aplicaciones Express
+title: Express application generator
 description: Learn how to use the Express application generator tool to quickly create a skeleton for your Express.js applications, streamlining setup and configuration.
 menu: starter
 lang: en
 redirect_from: "  "
 ---
 
-# Generador de aplicaciones Express
+# Express application generator
 
-Utilice la herramienta de generador de aplicaciones, `express`, para crear rápidamente un esqueleto de aplicación.
+Use the application generator tool, `express-generator`, to quickly create an application skeleton.
 
 You can run the application generator with the `npx` command (available in Node.js 8.2.0).
 
@@ -24,7 +24,7 @@ $ npm install -g express-generator
 $ express
 ```
 
-Muestre las opciones de mandato con la opción `-h`:
+Display the command options with the `-h` option:
 
 ```bash
 $ express -h
@@ -46,7 +46,7 @@ $ express -h
     -f, --force         force on non-empty directory
 ```
 
-Por ejemplo, el código siguiente crea una aplicación Express denominada _myapp_. La aplicación será creada en una carpeta llamada _myapp_ en el directorio de trabajo actual y el motor de vistas será asignado a <a href="https://pugjs.org/" target="_blank" title="Documentación de Pug">Pug</a>:
+For example, the following creates an Express app named _myapp_. The app will be created in a folder named _myapp_ in the current working directory and the view engine will be set to <a href="https://pugjs.org/" target="_blank" title="Pug documentation">Pug</a>:
 
 ```bash
 $ express --view=pug myapp
@@ -70,20 +70,20 @@ $ express --view=pug myapp
    create : myapp/bin/www
 ```
 
-A continuación, instale las dependencias:
+Then install dependencies:
 
 ```bash
 $ cd myapp
 $ npm install
 ```
 
-En MacOS o Linux, ejecute la aplicación con este mandato:
+On MacOS or Linux, run the app with this command:
 
 ```bash
 $ DEBUG=myapp:* npm start
 ```
 
-En Windows, utilice este mandato:
+On Windows Command Prompt, use this command:
 
 ```bash
 > set DEBUG=myapp:* & npm start
@@ -95,7 +95,7 @@ On Windows PowerShell, use this command:
 PS> $env:DEBUG='myapp:*'; npm start
 ```
 
-A continuación, cargue `http://localhost:3000/` en el navegador para acceder a la aplicación.
+Then, load `http://localhost:3000/` in your browser to access the app.
 
 The generated app has the following directory structure:
 
@@ -122,7 +122,7 @@ The generated app has the following directory structure:
 ```
 
 <div class="doc-box doc-info" markdown="1">
-La estructura de la aplicación creada por el generador es sólo una de las muchas formas de estructurar las aplicaciones Express. Puede utilizar esta estructura o modificarla según sus necesidades.
+The app structure created by the generator is just one of many ways to structure Express apps. Feel free to use this structure or modify it to best suit your needs.
 </div>
 
 ### [Previous: Hello World ](/{{ page.lang }}/starter/hello-world.html)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Basic routing](/{{ page.lang }}/starter/basic-routing.html)

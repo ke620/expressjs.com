@@ -1,17 +1,17 @@
 ---
 layout: page
-title: Migración a Express 5
+title: Migrating to Express 5
 description: A comprehensive guide to migrating your Express.js applications from version 4 to 5, detailing breaking changes, deprecated methods, and new improvements.
 menu: guide
 lang: en
 redirect_from: "  "
 ---
 
-# Migración a Express 5
+# Moving to Express 5
 
 <h2 id="overview">Overview</h2>
 
-Express 5 no es muy diferente de Express 4: los cambios en la API no son tan significativos como los de la migración de 3.0 a 4.0. Aunque la API básica permanece igual, continúa habiendo cambios que rompen el código existente; es decir, un programa de Express 4 existente no funcionará si lo actualiza para que utilice Express 5.
+Express 5 is not very different from Express 4; although it maintains the same basic API, there are still changes that break compatibility with the previous version. Therefore, an application built with Express 4 might not work if you update it to use Express 5.
 
 To install this version, you need to have a Node.js version 18 or higher. Then, execute the following command in your application directory:
 
@@ -19,7 +19,7 @@ To install this version, you need to have a Node.js version 18 or higher. Then, 
 npm install "express@5"
 ```
 
-A continuación, puede ejecutar las pruebas automatizadas para ver qué falla y solucionar los problemas según las actualizaciones siguientes. Después de solucionar los errores de las pruebas, ejecute la aplicación para ver qué errores se producen. Verá rápidamente si la aplicación utiliza métodos o propiedades que no están soportados.
+You can then run your automated tests to see what fails, and fix problems according to the updates listed below. After addressing test failures, run your app to see what errors occur. You'll find out right away if the app uses any methods or properties that are not supported.
 
 ## Express 5 Codemods
 
@@ -41,13 +41,13 @@ You can find the list of available codemods [here](https://github.com/expressjs/
 
 <h2 id="changes">Changes in Express 5</h2>
 
-**Métodos y propiedades eliminados**
+**Removed methods and properties**
 
 <ul class="doclist">
   <li><a href="#app.del">app.del()</a></li>
   <li><a href="#app.param">app.param(fn)</a></li>
-  <li><a href="#plural">Nombres de métodos pluralizados</a></li>
-  <li><a href="#leading">Dos puntos delanteros en el argumento de nombre en app.param(name, fn)</a></li>
+  <li><a href="#plural">Pluralized method names</a></li>
+  <li><a href="#leading">Leading colon in name argument to app.param(name, fn)</a></li>
   <li><a href="#req.param">req.param(name)</a></li>
   <li><a href="#res.json">res.json(obj, status)</a></li>
   <li><a href="#res.jsonp">res.jsonp(obj, status)</a></li>
@@ -61,7 +61,7 @@ You can find the list of available codemods [here](https://github.com/expressjs/
   <li><a href="#express:router-debug-logs">express:router debug logs</a></li>
 </ul>
 
-**Mejoras**
+**Changed**
 
 <ul class="doclist">
   <li><a href="#path-syntax">Path route matching syntax</a></li>
@@ -77,7 +77,7 @@ You can find the list of available codemods [here](https://github.com/expressjs/
   <li><a href="#res.vary">res.vary</a></li>
 </ul>
 
-**Modificados**
+**Improvements**
 
 <ul class="doclist">
   <li><a href="#res.render">res.render()</a></li>
@@ -86,13 +86,13 @@ You can find the list of available codemods [here](https://github.com/expressjs/
 
 ## Removed methods and properties
 
-Si utiliza cualquiera de estos métodos o propiedades en la aplicación, se bloqueará. Por lo tanto, deberá cambiar la aplicación después de actualizar a la versión 5.
+If you use any of these methods or properties in your app, it will crash. So, you'll need to change your app after you update to version 5.
 
 <h3 id="app.del">app.del()</h3>
 
-Express 5 ya no da soporte a la función `app.del()`. Si utiliza esta función, se genera un error. Para registrar las rutas HTTP DELETE, utilice la función `app.delete()` en su lugar.
+Express 5 no longer supports the `app.del()` function. If you use this function, an error is thrown. For registering HTTP DELETE routes, use the `app.delete()` function instead.
 
-Inicialmente, se utilizaba `del` en lugar de `delete`, porque `delete` es una palabra clave reservada en JavaScript. No obstante, a partir de ECMAScript 6, `delete` y otras palabras clave reservadas pueden utilizarse correctamente como nombres de propiedad.
+Initially, `del` was used instead of `delete`, because `delete` is a reserved keyword in JavaScript. However, as of ECMAScript 6, `delete` and other reserved keywords can legally be used as property names.
 
 {% capture codemod-deprecated-signatures %}
 You can replace the deprecated signatures with the following command:
@@ -119,17 +119,17 @@ app.delete('/user/:id', (req, res) => {
 
 <h3 id="app.param">app.param(fn)</h3>
 
-La firma `app.param(fn)` se utilizaba para modificar el comportamiento de la función `app.param(name, fn)`. Está en desuso desde v4.11.0 y Express 5 ya no le da soporte.
+The `app.param(fn)` signature was used for modifying the behavior of the `app.param(name, fn)` function. It has been deprecated since v4.11.0, and Express 5 no longer supports it at all.
 
 <h3 id="plural">Pluralized method names</h3>
 
-Los siguientes nombres de métodos se han pluralizado. En Express 4, el uso de los métodos antiguos daba como resultado un aviso de obsolescencia. Express 5 ya no les da soporte:
+The following method names have been pluralized. In Express 4, using the old methods resulted in a deprecation warning. Express 5 no longer supports them at all:
 
-`req.acceptsLanguage()` se ha sustituido por `req.acceptsLanguages()`.
+`req.acceptsCharset()` is replaced by `req.acceptsCharsets()`.
 
-`req.acceptsCharset()` se ha sustituido por `req.acceptsCharsets()`.
+`req.acceptsEncoding()` is replaced by `req.acceptsEncodings()`.
 
-`req.acceptsEncoding()` se ha sustituido por `req.acceptsEncodings()`.
+`req.acceptsLanguage()` is replaced by `req.acceptsLanguages()`.
 
 {% capture codemod-pluralized-methods %}
 You can replace the deprecated signatures with the following command:
@@ -162,15 +162,15 @@ app.all('/', (req, res) => {
 })
 ```
 
-<h3 id="leading">Dos puntos (:) delanteros en el nombre de app.param(name, fn)</h3>
+<h3 id="leading">Leading colon (:) in the name for app.param(name, fn)</h3>
 
-El carácter de dos puntos (:) delanteros en el nombre de la función `app.param(name, fn)` es un remanente de Express 3 y, a efectos de retrocompatibilidad, Express 4 le daba soporte con un aviso de obsolescencia. Express 5 lo ignorará de forma silenciosa y utilizará el parámetro de nombre sin añadir el prefijo de dos puntos.
+A leading colon character (:) in the name for the `app.param(name, fn)` function is a remnant of Express 3, and for the sake of backwards compatibility, Express 4 supported it with a deprecation notice. Express 5 will silently ignore it and use the name parameter without prefixing it with a colon.
 
-Esto no afectará al código si sigue la documentación de Express 4 de [app.param](/{{ page.lang }}/4x/api.html#app.param), ya que no hace ninguna referencia a los dos puntos delanteros.
+This should not affect your code if you follow the Express 4 documentation of [app.param](/{{ page.lang }}/4x/api.html#app.param), as it makes no mention of the leading colon.
 
 <h3 id="req.param">req.param(name)</h3>
 
-Este método potencialmente confuso y peligroso de recuperar datos de formulario se ha eliminado. No necesitará buscar específicamente el nombre de parámetro enviado en el objeto `req.params`, `req.body` o `req.query`.
+This potentially confusing and dangerous method of retrieving form data has been removed. You will now need to specifically look for the submitted parameter name in the `req.params`, `req.body`, or `req.query` object.
 
 {% capture codemod-req-param %}
 You can replace the deprecated signatures with the following command:
@@ -205,7 +205,7 @@ app.post('/user', (req, res) => {
 
 <h3 id="res.json">res.json(obj, status)</h3>
 
-Express 5 ya no da soporte a la firma `res.json(obj, status)`. En su lugar, establezca el estado y encadénelo al método `res.json()` de la siguiente manera: `res.status(status).json(obj)`.
+Express 5 no longer supports the signature `res.json(obj, status)`. Instead, set the status and then chain it to the `res.json()` method like this: `res.status(status).json(obj)`.
 
 {% include admonitions/note.html content=codemod-deprecated-signatures %}
 
@@ -223,7 +223,7 @@ app.post('/user', (req, res) => {
 
 <h3 id="res.jsonp">res.jsonp(obj, status)</h3>
 
-Express 5 ya no da soporte a la firma `res.jsonp(obj, status)`. En su lugar, establezca el estado y encadénelo al método `res.jsonp()` de la siguiente manera: `res.status(status).jsonp(obj)`.
+Express 5 no longer supports the signature `res.jsonp(obj, status)`. Instead, set the status and then chain it to the `res.jsonp()` method like this: `res.status(status).jsonp(obj)`.
 
 {% include admonitions/note.html content=codemod-deprecated-signatures %}
 
@@ -241,7 +241,7 @@ app.post('/user', (req, res) => {
 
 <h3 id="res.redirect">res.redirect(url, status)</h3>
 
-Express 5 ya no da soporte a la firma `res.send(obj, status)`. En su lugar, establezca el estado y encadénelo al método `res.send()` de la siguiente manera: `res.status(status).send(obj)`.
+Express 5 no longer supports the signature `res.redirect(url, status)`. Instead, use the following signature: `res.redirect(status, url)`.
 
 {% include admonitions/note.html content=codemod-deprecated-signatures %}
 
@@ -304,8 +304,8 @@ app.get('/user', (req, res) => {
 
 <h3 id="res.send.status">res.send(status)</h3>
 
-Express 5 ya no da soporte a la firma <code>res.send(<em>status</em>)</code>, donde _`status`_ es un número. En su lugar, utilice la función `res.sendStatus(statusCode)`, que establece el código de estado de la cabecera de respuesta HTTP y envía la versión de texto del código: "Not Found", "Internal Server Error", etc.
-Si necesita enviar un número utilizando la función `res.send()`, escríbalo entre comillas para convertirlo en una serie, para que Express no lo interprete como un intento de utilizar la firma antigua no soportada.
+Express 5 no longer supports the signature `res.send(status)`, where `status` is a number. Instead, use the `res.sendStatus(statusCode)` function, which sets the HTTP response header status code and sends the text version of the code: "Not Found", "Internal Server Error", and so on.
+If you need to send a number by using the `res.send()` function, quote the number to convert it to a string, so that Express does not interpret it as an attempt to use the unsupported old signature.
 
 {% include admonitions/note.html content=codemod-deprecated-signatures %}
 
@@ -323,7 +323,7 @@ app.get('/user', (req, res) => {
 
 <h3 id="res.sendfile">res.sendfile()</h3>
 
-La función `res.sendfile()` se ha sustituido por una versión de la función `res.sendFile()` con cada palabra en mayúscula en Express 5.
+The `res.sendfile()` function has been replaced by a camel-cased version `res.sendFile()` in Express 5.
 
 {% include admonitions/note.html content=codemod-deprecated-signatures %}
 
@@ -341,7 +341,7 @@ app.get('/user', (req, res) => {
 
 <h3 id="router.param">router.param(fn)</h3>
 
-The `router.param(fn)` signature was used for modifying the behavior of the `router.param(name, fn)` function. Está en desuso desde v4.11.0 y Express 5 ya no le da soporte.
+The `router.param(fn)` signature was used for modifying the behavior of the `router.param(name, fn)` function. It has been deprecated since v4.11.0, and Express 5 no longer supports it at all.
 
 <h3 id="express.static.mime">express.static.mime</h3>
 
@@ -376,7 +376,7 @@ DEBUG=express:* node index.js
 DEBUG=express:*,router,router:* node index.js
 ```
 
-## Modificados
+## Changed
 
 <h3 id="path-syntax">Path route matching syntax</h3>
 
@@ -468,7 +468,7 @@ const server = app.listen(8080, '0.0.0.0', (error) => {
 
 <h3 id="app.router">app.router</h3>
 
-El objeto `app.router`, que se ha eliminado en Express 4, ha vuelto en Express 5. En la nueva versión, este objeto es sólo una referencia al direccionador de Express base, a diferencia de en Express 3, donde una aplicación debía cargarlo explícitamente.
+The `app.router` object, which was removed in Express 4, has made a comeback in Express 5. In the new version, this object is a just a reference to the base Express router, unlike in Express 3, where an app had to explicitly load it.
 
 <h3 id="req.body">req.body</h3> 
 
@@ -476,7 +476,7 @@ The `req.body` property returns `undefined` when the body has not been parsed. I
 
 <h3 id="req.host">req.host</h3>
 
-En Express 4, la función `req.host` fragmentaba incorrectamente el número de puerto si estaba presente. In Express 5, the port number is maintained.
+In Express 4, the `req.host` function incorrectly stripped off the port number if it was present. In Express 5, the port number is maintained.
 
 <h3 id="req.query">req.query</h3>
 
@@ -498,7 +498,7 @@ The `res.vary` throws an error when the `field` argument is missing. In Express 
 
 <h3 id="res.render">res.render()</h3>
 
-Este método ahora impone un comportamiento asíncrono para todos los motores de vistas, lo que evita los errores provocados por los motores de vistas que tenían una implementación síncrona e incumplían la interfaz recomendada.
+This method now enforces asynchronous behavior for all view engines, avoiding bugs caused by view engines that had a synchronous implementation and that violated the recommended interface.
 
 <h3 id="brotli-support">Brotli encoding support</h3>
 

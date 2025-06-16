@@ -1,20 +1,19 @@
 ---
 layout: page
-title: Actualizaciones de seguridad de Express
+title: Express security updates
 description: Review the latest security updates and patches for Express.js, including detailed vulnerability lists for different versions to help maintain a secure application.
 menu: advanced
 lang: en
 redirect_from: "  "
 ---
 
-# Actualizaciones de seguridad
+# Security updates
 
 <div class="doc-box doc-notice" markdown="1">
-Node.js vulnerabilities directly affect Express. Por lo tanto, [vigile las vulnerabilidades de Node.js](https://nodejs.org
-/en/blog/vulnerability/) y asegúrese de utilizar la versión estable más reciente de Node.js.
+Node.js vulnerabilities directly affect Express. Therefore, [keep a watch on Node.js vulnerabilities](https://nodejs.org/en/blog/vulnerability/) and make sure you are using the latest stable version of Node.js.
 </div>
 
-En la lista siguiente se muestran las vulnerabilidades de Express que se han solucionado en la actualización de versión especificada.
+The list below enumerates the Express vulnerabilities that were fixed in the specified version update.
 
 {% capture security-policy %}
 If you believe you have discovered a security vulnerability in Express, please see
@@ -51,38 +50,38 @@ If you believe you have discovered a security vulnerability in Express, please s
 - 4.15.2
   - The dependency `qs` has been updated to address a [vulnerability](https://snyk.io/vuln/npm:qs:20170213), but this issue does not impact Express. Updating to 4.15.2 is a good practice, but not required to address the vulnerability.
 - 4.11.1
-  - Se ha solucionado la vulnerabilidad de divulgación de vía de acceso raíz en `express.static`, `res.sendfile` y `res.sendFile`
+  - Fixed root path disclosure vulnerability in `express.static`, `res.sendfile`, and `res.sendFile`
 - 4.10.7
-  - Se ha solucionado la vulnerabilidad de Open Redirect en `express.static` ([anuncio](https://npmjs.com/advisories/35), [CVE-2015-1164](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1164)).
+  - Fixed open redirect vulnerability in `express.static` ([advisory](https://npmjs.com/advisories/35), [CVE-2015-1164](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1164)).
 - 4.8.8
-  - Se han solucionado las vulnerabilidades de cruce de directorios en `express.static` ([anuncio](http://npmjs.com/advisories/32) , [CVE-2014-6394](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6394)).
+  - Fixed directory traversal vulnerabilities in `express.static` ([advisory](http://npmjs.com/advisories/32) , [CVE-2014-6394](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6394)).
 - 4.8.4
-  - Node.js 0.10 puede tener fugas de `fd` en determinadas situaciones que afectan a `express.static` y `res.sendfile`. Las solicitudes maliciosas pueden provocar la fuga de `fd` y, en última instancia, generar errores `EMFILE` y anular la capacidad de respuesta del servidor.
+  - Node.js 0.10 can leak `fd`s in certain situations that affect `express.static` and `res.sendfile`. Malicious requests could cause `fd`s to leak and eventually lead to `EMFILE` errors and server unresponsiveness.
 - 4.8.0
-  - Las matrices dispersas que tienen índices extremadamente altos en la serie de consulta pueden hacer que el proceso se quede sin memoria y se bloquee el servidor.
-  - Los objetos de serie de consulta extremadamente anidados pueden hacer que se bloquee el proceso y anular la capacidad de respuesta del servidor temporalmente.
+  - Sparse arrays that have extremely high indexes in the query string could cause the process to run out of memory and crash the server.
+  - Extremely nested query string objects could cause the process to block and make the server unresponsive temporarily.
 
 ## 3.x
 
   <div class="doc-box doc-warn" markdown="1">
-  **Express 3.x YA NO SE MANTIENE**
+  **Express 3.x IS END-OF-LIFE AND NO LONGER MAINTAINED**
 
-Los problemas de rendimiento y seguridad conocidos y desconocidos en 3.x no se han solucionado desde la última actualización (1 de agosto de 2015). Se recomienda especialmente utilizar la última versión de Express.
+Known and unknown security and performance issues in 3.x have not been addressed since the last update (1 August, 2015). It is highly recommended to use the latest version of Express.
 
 If you are unable to upgrade past 3.x, please consider [Commercial Support Options](/{{ page.lang }}/support#commercial-support-options).
 
   </div>
 
 - 3.19.1
-  - Se ha solucionado la vulnerabilidad de divulgación de vía de acceso raíz en `express.static`, `res.sendfile` y `res.sendFile`
+  - Fixed root path disclosure vulnerability in `express.static`, `res.sendfile`, and `res.sendFile`
 - 3.19.0
-  - Se ha solucionado la vulnerabilidad de Open Redirect en `express.static` ([anuncio](https://npmjs.com/advisories/35), [CVE-2015-1164](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1164)).
+  - Fixed open redirect vulnerability in `express.static` ([advisory](https://npmjs.com/advisories/35), [CVE-2015-1164](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-1164)).
 - 3.16.10
-  - Se han solucionado las vulnerabilidades de cruce de directorios en `express.static`.
+  - Fixed directory traversal vulnerabilities in `express.static`.
 - 3.16.6
-  - Node.js 0.10 puede tener fugas de `fd` en determinadas situaciones que afectan a `express.static` y `res.sendfile`. Las solicitudes maliciosas pueden provocar la fuga de `fd` y, en última instancia, generar errores `EMFILE` y anular la capacidad de respuesta del servidor.
+  - Node.js 0.10 can leak `fd`s in certain situations that affect `express.static` and `res.sendfile`. Malicious requests could cause `fd`s to leak and eventually lead to `EMFILE` errors and server unresponsiveness.
 - 3.16.0
-  - Las matrices dispersas que tienen índices extremadamente altos en la serie de consulta pueden hacer que el proceso se quede sin memoria y se bloquee el servidor.
-  - Los objetos de serie de consulta extremadamente anidados pueden hacer que se bloquee el proceso y anular la capacidad de respuesta del servidor temporalmente.
+  - Sparse arrays that have extremely high indexes in query string could cause the process to run out of memory and crash the server.
+  - Extremely nested query string objects could cause the process to block and make the server unresponsive temporarily.
 - 3.3.0
-  - La respuesta 404 de un intento de alteración temporal de método no soportado era susceptible de ataques de scripts entre sitios.
+  - The 404 response of an unsupported method override attempt was susceptible to cross-site scripting attacks.

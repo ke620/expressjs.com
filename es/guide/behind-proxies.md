@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Express detrás de proxies
+title: Express behind proxies
 description: Learn how to configure Express.js applications to work correctly behind reverse proxies, including using the trust proxy setting to handle client IP addresses.
 menu: guide
-lang: en
+lang: es
 redirect_from: "  "
 ---
 
-# Express detrás de proxies
+# Express behind proxies
 
 When running an Express app behind a reverse proxy, some of the Express APIs may return different values than expected. In order to adjust for this, the `trust proxy` application setting may be used to expose information provided by the reverse proxy in the Express APIs. The most common issue is express APIs that expose the client's IP address may instead show an internal IP address of the reverse proxy.
 
@@ -21,11 +21,11 @@ The application setting `trust proxy` may be set to one of the values listed in 
   <thead><tr><th>Type</th><th>Value</th></tr></thead>
   <tbody>
     <tr>
-      <td>Booleano</td>
+      <td>Boolean</td>
 <td markdown="1">
-Si es `true`, la dirección IP del cliente se entiende como la entrada más a la izquierda en la cabecera `X-Forwarded-*`.
+If `true`, the client's IP address is understood as the left-most entry in the `X-Forwarded-For` header.
 
-Si es `false`, la aplicación se entiende como orientada directamente a Internet, y la dirección IP del cliente se obtiene de `req.connection.remoteAddress`. Este es el valor predeterminado.
+If `false`, the app is understood as directly facing the client and the client's IP address is derived from `req.socket.remoteAddress`. This is the default setting.
 
 <div class="doc-box doc-warn" markdown="1">
 When setting to `true`, it is important to ensure that the last reverse proxy trusted is removing/overwriting all of the following HTTP headers: `X-Forwarded-For`, `X-Forwarded-Host`, and `X-Forwarded-Proto`, otherwise it may be possible for the client to provide any value.
@@ -41,7 +41,7 @@ An IP address, subnet, or an array of IP addresses and subnets to trust as being
 - linklocal - `169.254.0.0/16`, `fe80::/10`
 - uniquelocal - `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `fc00::/7`
 
-Puede establecer direcciones IP de varias formas:
+You can set IP addresses in any of the following ways:
 
 ```js
 app.set('trust proxy', 'loopback') // specify a single subnet
@@ -50,7 +50,7 @@ app.set('trust proxy', 'loopback, linklocal, uniquelocal') // specify multiple s
 app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']) // specify multiple subnets as an array
 ```
 
-Cuando se especifican, las direcciones IP o las subredes se excluyen del proceso de determinación de direcciones, y la dirección IP no de confianza más próxima al servidor de aplicaciones se establece como la dirección IP del cliente. This works by checking if `req.socket.remoteAddress` is trusted. If so, then each address in `X-Forwarded-For` is checked from right to left until the first non-trusted address.
+When specified, the IP addresses or the subnets are excluded from the address determination process, and the untrusted IP address nearest to the application server is determined as the client's IP address. This works by checking if `req.socket.remoteAddress` is trusted. If so, then each address in `X-Forwarded-For` is checked from right to left until the first non-trusted address.
 
 </td>
     </tr>
@@ -84,12 +84,12 @@ app.set('trust proxy', (ip) => {
 Enabling `trust proxy` will have the following impact:
 
 <ul>
-  <li markdown="1">El valor de [req.hostname](/{{ page.lang }}/api.html#req.hostname) se obtiene del valor definido en la cabecera `X-Forwarded-Host`, que puede estar establecido por el cliente o el proxy.
+  <li markdown="1">The value of [req.hostname](/{{ page.lang }}/api.html#req.hostname) is derived from the value set in the `X-Forwarded-Host` header, which can be set by the client or by the proxy.
   </li>
-  <li markdown="1">El proxy inverso puede establecer `X-Forwarded-Proto` para indicar a la aplicación si es `https`, `http` o incluso un nombre no válido. [req.protocol](/{{ page.lang }}/api.html#req.protocol) refleja este valor.
+  <li markdown="1">`X-Forwarded-Proto` can be set by the reverse proxy to tell the app whether it is `https` or  `http` or even an invalid name. This value is reflected by [req.protocol](/{{ page.lang }}/api.html#req.protocol).
   </li>
-  <li markdown="1">Los valores [req.ip](/{{ page.lang }}/api.html#req.ip) y [req.ips](/{{ page.lang }}/api.html#req.ips) se rellenan con la lista de direcciones de `X-Forwarded-For`.
+  <li markdown="1">The [req.ip](/{{ page.lang }}/api.html#req.ip) and [req.ips](/{{ page.lang }}/api.html#req.ips) values are populated based on the socket address and `X-Forwarded-For` header, starting at the first untrusted address.
   </li>
 </ul>
 
-El valor `trust proxy` se implementa utilizando el paquete [proxy-addr](https://www.npmjs.com/package/proxy-addr). For more information, see its documentation.
+The `trust proxy` setting is implemented using the [proxy-addr](https://www.npmjs.com/package/proxy-addr) package. For more information, see its documentation.

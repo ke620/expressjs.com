@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Instalación de Express
+title: Installing Express
 description: Learn how to install Express.js in your Node.js environment, including setting up your project directory and managing dependencies with npm.
 menu: starter
 lang: en
 redirect_from: "  "
 ---
 
-# Instalación
+# Installing
 
-Suponiendo que ya ha instalado [Node.js](https://nodejs.org/), cree un directorio para que contenga la aplicación y conviértalo en el directorio de trabajo.
+Assuming you've already installed [Node.js](https://nodejs.org/), create a directory to hold your application, and make that your working directory.
 
 - [Express 4.x](/{{ page.lang }}/4x/api.html) requires Node.js 0.10 or higher.
 - [Express 5.x](/{{ page.lang }}/5x/api.html) requires Node.js 18 or higher.
@@ -19,36 +19,36 @@ $ mkdir myapp
 $ cd myapp
 ```
 
-Utilice el mandato `npm init` para crear un archivo `package.json` para la aplicación.
-Para obtener más información sobre cómo funciona `package.json`, consulte [Specifics of npm's package.json handling](https://docs.npmjs.com/files/package.json).
+Use the `npm init` command to create a `package.json` file for your application.
+For more information on how `package.json` works, see [Specifics of npm's package.json handling](https://docs.npmjs.com/files/package.json).
 
 ```bash
 $ npm init
 ```
 
-Este mandato solicita varios elementos como, por ejemplo, el nombre y la versión de la aplicación.
-Por ahora, sólo tiene que pulsar INTRO para aceptar los valores predeterminados para la mayoría de ellos, con la siguiente excepción:
+This command prompts you for a number of things, such as the name and version of your application.
+For now, you can simply hit RETURN to accept the defaults for most of them, with the following exception:
 
 ```
 entry point: (index.js)
 ```
 
-Especifique `app.js` o el nombre que desee para el archivo principal. Si desea que sea `index.js`, pulse INTRO para aceptar el nombre de archivo predeterminado recomendado.
+Enter `app.js`, or whatever you want the name of the main file to be. If you want it to be `index.js`, hit RETURN to accept the suggested default file name.
 
-A continuación, instale Express en el directorio `myapp` y guárdelo en la lista de dependencias. For example:
+Now, install Express in the `myapp` directory and save it in the dependencies list. For example:
 
 ```bash
 $ npm install express
 ```
 
-Para instalar Express temporalmente y no añadirlo a la lista de dependencias, omita la opción `--save`:
+To install Express temporarily and not add it to the dependencies list:
 
 ```bash
 $ npm install express --no-save
 ```
 
 <div class="doc-box doc-info" markdown="1">
-Los módulos de Node que se instalan con la opción `--save` se añaden a la lista `dependencies` en el archivo `package.json`. Posteriormente, si ejecuta `npm install` en el directorio `app`, los módulos se instalarán automáticamente en la lista de dependencias.
+By default with version npm 5.0+, `npm install` adds the module to the `dependencies` list in the `package.json` file; with earlier versions of npm, you must specify the `--save` option explicitly. Then, afterwards, running `npm install` in the app directory will automatically install modules in the dependencies list.
 </div>
 
 ### [Next: Hello World ](/{{ page.lang }}/starter/hello-world.html)

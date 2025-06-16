@@ -1,17 +1,17 @@
 ---
 layout: page
-title: Direccionamiento básico de Express
+title: Express basic routing
 description: Learn the fundamentals of routing in Express.js applications, including how to define routes, handle HTTP methods, and create route handlers for your web server.
 menu: starter
 lang: en
 redirect_from: "  "
 ---
 
-# Direccionamiento básico
+# Basic routing
 
-El _direccionamiento_ hace referencia a la determinación de cómo responde una aplicación a una solicitud de cliente en un determinado punto final, que es un URI (o una vía de acceso) y un método de solicitud HTTP específico (GET, POST, etc.).
+_Routing_ refers to determining how an application responds to a client request to a particular endpoint, which is a URI (or path) and a specific HTTP request method (GET, POST, and so on).
 
-Cada ruta puede tener una o varias funciones de manejador, que se excluyen cuando se correlaciona la ruta.
+Each route can have one or more handler functions, which are executed when the route is matched.
 
 Route definition takes the following structure:
 
@@ -22,17 +22,17 @@ app.METHOD(PATH, HANDLER)
 Where:
 
 - `app` is an instance of `express`.
-- `METHOD` es un [método de solicitud HTTP](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol).
-- `PATH` es una vía de acceso en el servidor.
-- `HANDLER` es la función que se ejecuta cuando se correlaciona la ruta.
+- `METHOD` is an [HTTP request method](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods), in lowercase.
+- `PATH` is a path on the server.
+- `HANDLER` is the function executed when the route is matched.
 
 <div class="doc-box doc-notice" markdown="1">
-En esta guía de aprendizaje se supone que se crea una instancia de `express` denominada `app` y que el servidor está en ejecución. Si no está familiarizado con la creación y el inicio de una aplicación, consulte el [Ejemplo Hello world](/{{ page.lang }}/starter/hello-world.html).
+This tutorial assumes that an instance of `express` named `app` is created and the server is running. If you are not familiar with creating an app and starting it, see the [Hello world example](/{{ page.lang }}/starter/hello-world.html).
 </div>
 
-El siguiente ejemplo ilustra la definición de rutas simples.
+The following examples illustrate defining simple routes.
 
-Responda con `Hello World!` en la página inicial:
+Respond with `Hello World!` on the homepage:
 
 ```js
 app.get('/', (req, res) => {
@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 })
 ```
 
-Responda a la solicitud POST en la ruta raíz (`/`), la página de inicio de la aplicación:
+Respond to POST request on the root route (`/`), the application's home page:
 
 ```js
 app.post('/', (req, res) => {
@@ -48,7 +48,7 @@ app.post('/', (req, res) => {
 })
 ```
 
-Responda a una solicitud PUT en la ruta `/user`:
+Respond to a PUT request to the `/user` route:
 
 ```js
 app.put('/user', (req, res) => {
@@ -56,7 +56,7 @@ app.put('/user', (req, res) => {
 })
 ```
 
-Responda a una solicitud DELETE en la ruta `/user`:
+Respond to a DELETE request to the `/user` route:
 
 ```js
 app.delete('/user', (req, res) => {
@@ -64,6 +64,6 @@ app.delete('/user', (req, res) => {
 })
 ```
 
-Para obtener más detalles sobre el direccionamiento, consulte la [guía de direccionamiento](/{{ page.lang }}/guide/routing.html).
+For more details about routing, see the [routing guide](/{{ page.lang }}/guide/routing.html).
 
 ### [Previous: Express application generator ](/{{ page.lang }}/starter/generator.html)&nbsp;&nbsp;&nbsp;&nbsp;[Next: Serving static files in Express ](/{{ page.lang }}/starter/static-files.html)

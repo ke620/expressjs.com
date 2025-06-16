@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Manejo de errores de Express
+title: Express error handling
 description: Understand how Express.js handles errors in synchronous and asynchronous code, and learn to implement custom error handling middleware for your applications.
 menu: guide
 lang: en
@@ -28,7 +28,9 @@ app.get('/', (req, res) => {
 })
 ```
 
-Defina las funciones de middleware de manejo de errores de la misma forma que otras funciones de middleware, excepto que las funciones de manejo de errores tienen cuatro argumentos en lugar de tres: `(err, req, res, next)`.  For example:
+For errors returned from asynchronous functions invoked by route handlers
+and middleware, you must pass them to the `next()` function, where Express will
+catch and process them.  For example:
 
 ```js
 app.get('/', (req, res, next) => {
@@ -42,7 +44,8 @@ app.get('/', (req, res, next) => {
 })
 ```
 
-Si tiene un manejador de rutas con varias funciones de devolución de llamada, puede utilizar el parámetro `route` para omitir el siguiente manejador de rutas.
+Starting with Express 5, route handlers and middleware that return a Promise
+will call `next(value)` automatically when they reject or throw an error.
 For example:
 
 ```js
@@ -56,7 +59,9 @@ If `getUserById` throws an error or rejects, `next` will be called with either
 the thrown error or the rejected value. If no rejected value is provided, `next`
 will be called with a default Error object provided by the Express router.
 
-Si pasa cualquier valor a la función `next()` (excepto la serie `'route'`), Express considera que la solicitud actual tiene un error y omitirá las restantes funciones de middleware y direccionamiento que no son de manejo de errores.
+If you pass anything to the `next()` function (except the string `'route'`),
+Express regards the current request as being an error and will skip any
+remaining non-error handling routing and middleware functions.
 
 If the callback in a sequence provides no data, only errors, you can simplify
 this code as follows:
@@ -140,14 +145,17 @@ handlers would not run.
 Whichever method you use, if you want Express error handlers to be called in and the
 application to survive, you must ensure that Express receives the error.
 
-## El manejador de errores predeterminado
+## The default error handler
 
-Express se suministra con un manejador de errores incorporado, que se encarga de los errores que aparecen en la aplicación. Esta función de middleware de manejo de errores predeterminada se añade al final de la pila de funciones de middleware.
+Express comes with a built-in error handler that takes care of any errors that might be encountered in the app. This default error-handling middleware function is added at the end of the middleware function stack.
 
-Si pasa un error a `next()` y no lo maneja en el manejador de errores, lo manejará el manejador de errores incorporado; el error se escribirá en el cliente con el seguimiento de la pila. El seguimiento de la pila no se incluye en el entorno de producción.
+If you pass an error to `next()` and you do not handle it in a custom error
+handler, it will be handled by the built-in error handler; the error will be
+written to the client with the stack trace. The stack trace is not included
+in the production environment.
 
 <div class="doc-box doc-info" markdown="1">
-Establezca la variable de entorno `NODE_ENV` en `production`, para ejecutar la aplicación en modalidad de producción.
+Set the environment variable `NODE_ENV` to `production`, to run the app in production mode.
 </div>
 
 When an error is written, the following information is added to the
@@ -160,9 +168,14 @@ response:
   environment, otherwise will be `err.stack`.
 - Any headers specified in an `err.headers` object.
 
-Si invoca `next()` con un error después de haber empezado a escribir la respuesta (por ejemplo, si encuentra un error mientras se envía la respuesta en modalidad continua al cliente), el manejador de errores predeterminado de Express cierra la conexión y falla la solicitud.
+If you call `next()` with an error after you have started writing the
+response (for example, if you encounter an error while streaming the
+response to the client), the Express default error handler closes the
+connection and fails the request.
 
-Por lo tanto, cuando añade un manejador de errores personalizado, se recomienda delegar en los mecanismos de manejo de errores predeterminados de Express, cuando las cabeceras ya se han enviado al cliente:
+So when you add a custom error handler, you must delegate to
+the default Express error handler, when the headers
+have already been sent to the client:
 
 ```js
 function errorHandler (err, req, res, next) {
@@ -192,7 +205,7 @@ app.use((err, req, res, next) => {
 })
 ```
 
-El middleware de manejo de errores se define al final, después de otras llamadas de rutas y `app.use()`; por ejemplo:
+You define error-handling middleware last, after other `app.use()` and routes calls; for example:
 
 ```js
 const bodyParser = require('body-parser')
@@ -208,9 +221,12 @@ app.use((err, req, res, next) => {
 })
 ```
 
-Las respuestas desde una función de middleware pueden estar en el formato que prefiera, por ejemplo, una página de errores HTML, un mensaje simple o una serie JSON.
+Responses from within a middleware function can be in any format, such as an HTML error page, a simple message, or a JSON string.
 
-A efectos de la organización (y de infraestructura de nivel superior), puede definir varias funciones de middleware de manejo de errores, de la misma forma que con las funciones de middleware normales. Por ejemplo, si desea definir un manejador de errores para las solicitudes realizadas utilizando `XHR`, y las que no lo tienen, puede utilizar los siguientes mandatos:
+For organizational (and higher-level framework) purposes, you can define
+several error-handling middleware functions, much as you would with
+regular middleware functions. For example, to define an error-handler
+for requests made by using `XHR` and those without:
 
 ```js
 const bodyParser = require('body-parser')
@@ -226,7 +242,8 @@ app.use(clientErrorHandler)
 app.use(errorHandler)
 ```
 
-En este ejemplo, los `logErrors` genéricos pueden escribir información de solicitudes y errores en `stderr`, por ejemplo:
+In this example, the generic `logErrors` might write request and
+error information to `stderr`, for example:
 
 ```js
 function logErrors (err, req, res, next) {
@@ -235,7 +252,7 @@ function logErrors (err, req, res, next) {
 }
 ```
 
-También en este ejemplo, `clientErrorHandler` se define de la siguiente manera; en este caso, el error se pasa de forma explícita al siguiente:
+Also in this example, `clientErrorHandler` is defined as follows; in this case, the error is explicitly passed along to the next one.
 
 Notice that when _not_ calling "next" in an error-handling function, you are responsible for writing (and ending) the response. Otherwise, those requests will "hang" and will not be eligible for garbage collection.
 
@@ -249,7 +266,7 @@ function clientErrorHandler (err, req, res, next) {
 }
 ```
 
-La función que detecta todos los errores de `errorHandler` puede implementarse de la siguiente manera:
+Implement the "catch-all" `errorHandler` function as follows (for example):
 
 ```js
 function errorHandler (err, req, res, next) {
@@ -277,8 +294,8 @@ app.get('/a_route_behind_paywall',
   })
 ```
 
-En este ejemplo, se omitirá el manejador `getPaidContent`, pero los restantes manejadores en `app` para `/a_route_behind_paywall` continuarán ejecutándose.
+In this example, the `getPaidContent` handler will be skipped but any remaining handlers in `app` for `/a_route_behind_paywall` would continue to be executed.
 
 <div class="doc-box doc-info" markdown="1">
-Las llamadas a `next()` y `next(err)` indican que el manejador actual está completo y en qué estado.  `next(err)` omitirá los demás manejadores de la cadena, excepto los que se hayan configurado para manejar errores como se ha descrito anteriormente.
+Calls to `next()` and `next(err)` indicate that the current handler is complete and in what state.  `next(err)` will skip all remaining handlers in the chain except for those that are set up to handle errors as described above.
 </div>

@@ -1,46 +1,46 @@
 ---
 layout: page
-title: Integración de la base de datos de Express
+title: Express database integration
 description: Discover how to integrate various databases with Express.js applications, including setup examples for MongoDB, MySQL, PostgreSQL, and more.
 menu: guide
 lang: en
 redirect_from: "  "
 ---
 
-# Integración de la base de datos
+# Database integration
 
-La adición de la funcionalidad de conectar bases de datos a las aplicaciones Express se consigue simplemente cargando el controlador de Node.js adecuado para la base de datos en la aplicación. En este documento se describe brevemente cómo añadir y utilizar algunos de los módulos de Node.js más conocidos para los sistemas de base de datos en la aplicación Express:
+Adding the capability to connect databases to Express apps is just a matter of loading an appropriate Node.js driver for the database in your app. This document briefly explains how to add and use some of the most popular Node.js modules for database systems in your Express app:
 
 - [Cassandra](#cassandra)
 - [Couchbase](#couchbase)
 - [CouchDB](#couchdb)
 - [LevelDB](#leveldb)
 - [MySQL](#mysql)
-- [MongoDB](#mongo)
+- [MongoDB](#mongodb)
 - [Neo4j](#neo4j)
 - [Oracle](#oracle)
-- [PostgreSQL](#postgres)
+- [PostgreSQL](#postgresql)
 - [Redis](#redis)
-- <a name="mysql"></a>
+- [SQL Server](#sql-server)
 - [SQLite](#sqlite)
-- [ElasticSearch](#elasticsearch)
+- [Elasticsearch](#elasticsearch)
 
 <div class="doc-box doc-notice" markdown="1">
-Estos son algunos de los muchos controladores de base de datos que hay disponibles. Para ver otras opciones, realice búsquedas en el sitio [npm](https://www.npmjs.com/).
+These database drivers are among many that are available. For other options,
+search on the [npm](https://www.npmjs.com/) site.
 </div>
 
 ## Cassandra
 
-**Módulo**: [cassandra-driver](https://github.com/datastax/nodejs-driver)
-**Instalación**
+**Module**: [cassandra-driver](https://github.com/datastax/nodejs-driver)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install cassandra-driver
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const cassandra = require('cassandra-driver')
@@ -56,13 +56,13 @@ client.execute('select key from system.local', (err, result) => {
 
 **Module**: [couchnode](https://github.com/couchbase/couchnode)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install couchbase
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const couchbase = require('couchbase')
@@ -91,16 +91,15 @@ bucket.query(query, [13], (err, result) => {
 
 ## CouchDB
 
-**Módulo**: [nano](https://github.com/dscape/nano)
-**Instalación**
+**Module**: [nano](https://github.com/dscape/nano)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install nano
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const nano = require('nano')('http://localhost:5984')
@@ -128,16 +127,15 @@ books.list((err, body) => {
 
 ## LevelDB
 
-**Módulo**: [levelup](https://github.com/rvagg/node-levelup)
-**Instalación**
+**Module**: [levelup](https://github.com/rvagg/node-levelup)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install level levelup leveldown
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const levelup = require('levelup')
@@ -156,16 +154,15 @@ db.put('name', 'LevelUP', (err) => {
 
 ## MySQL
 
-**Módulo**: [mysql](https://github.com/felixge/node-mysql/)
-**Instalación**
+**Module**: [mysql](https://github.com/felixge/node-mysql/)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install mysql
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const mysql = require('mysql')
@@ -189,10 +186,9 @@ connection.end()
 
 ## MongoDB
 
-**Módulo**: [mongodb](https://github.com/mongodb/node-mongodb-native)
-**Instalación**
+**Module**: [mongodb](https://github.com/mongodb/node-mongodb-native)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install mongodb
@@ -214,7 +210,7 @@ MongoClient.connect('mongodb://localhost:27017/animals', (err, db) => {
 })
 ```
 
-### <a name="cassandra"></a>
+### Example (v3.\*)
 
 ```js
 const MongoClient = require('mongodb').MongoClient
@@ -232,27 +228,19 @@ MongoClient.connect('mongodb://localhost:27017/animals', (err, client) => {
 })
 ```
 
-Si desea un controlador de modelo de objeto para MongoDB, consulte [Mongoose](https://github.com/LearnBoost/mongoose).
+If you want an object model driver for MongoDB, look at [Mongoose](https://github.com/LearnBoost/mongoose).
 
 ## Neo4j
 
-<code class="language-javascript" translate="no">
-var apoc = require('apoc');apoc.query('match (n) return n').exec().then(
-function (response) {
-console.log(response);
-},
-function (fail) {
-console.log(fail);
-}
-); </code>
+**Module**: [neo4j-driver](https://github.com/neo4j/neo4j-javascript-driver)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install neo4j-driver
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const neo4j = require('neo4j-driver')
@@ -275,15 +263,15 @@ session.readTransaction((tx) => {
 
 **Module**: [oracledb](https://github.com/oracle/node-oracledb)
 
-### <a name="elasticsearch"></a>
+### Installation
 
-NOTA: [Vea los requisitos previos de instalación](https://github.com/oracle/node-oracledb#-installation).
+NOTE: [See installation prerequisites](https://github.com/oracle/node-oracledb#-installation).
 
 ```bash
 $ npm install oracledb
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const oracledb = require('oracledb')
@@ -319,16 +307,15 @@ getEmployee(101)
 
 ## PostgreSQL
 
-**Módulo**: [pg-promise](https://github.com/vitaly-t/pg-promise)
-**Instalación**
+**Module**: [pg-promise](https://github.com/vitaly-t/pg-promise)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install pg-promise
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const pgp = require('pg-promise')(/* options */)
@@ -345,16 +332,15 @@ db.one('SELECT $1 AS value', 123)
 
 ## Redis
 
-**Módulo**: [redis](https://github.com/mranney/node_redis)
-**Instalación**
+**Module**: [redis](https://github.com/mranney/node_redis)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install redis
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const redis = require('redis')
@@ -383,13 +369,13 @@ client.hkeys('hash key', (err, replies) => {
 
 **Module**: [tedious](https://github.com/tediousjs/tedious)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install tedious
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const Connection = require('tedious').Connection
@@ -442,16 +428,15 @@ function executeStatement () {
 
 ## SQLite
 
-**Módulo**: [sqlite3](https://github.com/mapbox/node-sqlite3)
-**Instalación**
+**Module**: [sqlite3](https://github.com/mapbox/node-sqlite3)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install sqlite3
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const sqlite3 = require('sqlite3').verbose()
@@ -475,18 +460,17 @@ db.serialize(() => {
 db.close()
 ```
 
-## ElasticSearch
+## Elasticsearch
 
-**Módulo**: [elasticsearch](https://github.com/elastic/elasticsearch-js)
-**Instalación**
+**Module**: [elasticsearch](https://github.com/elastic/elasticsearch-js)
 
-### <a name="elasticsearch"></a>
+### Installation
 
 ```bash
 $ npm install elasticsearch
 ```
 
-### <a name="redis"></a>
+### Example
 
 ```js
 const elasticsearch = require('elasticsearch')

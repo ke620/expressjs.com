@@ -1,16 +1,16 @@
 ---
 layout: page
-title: Direccionamiento de Express
+title: Express routing
 description: Learn how to define and use routes in Express.js applications, including route methods, route paths, parameters, and using Router for modular routing.
 menu: guide
 lang: en
 redirect_from: "  "
 ---
 
-# Direccionamiento
+# Routing
 
-_Direccionamiento_ hace referencia a la definición de puntos finales de aplicación (URI) y cómo responden a las solicitudes de cliente.
-Para ver una introducción al direccionamiento, consulte [Direccionamiento básico](/{{ page.lang }}/starter/basic-routing.html).
+_Routing_ refers to how an application's endpoints (URIs) respond to client requests.
+For an introduction to routing, see [Basic routing](/{{ page.lang }}/starter/basic-routing.html).
 
 You define routing using methods of the Express `app` object that correspond to HTTP methods;
 for example, `app.get()` to handle GET requests and `app.post` to handle POST requests. For a full list,
@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 
 A route method is derived from one of the HTTP methods, and is attached to an instance of the `express` class.
 
-El siguiente código es un ejemplo de las rutas que se definen para los métodos GET y POST a la raíz de la aplicación.
+The following code is an example of routes that are defined for the `GET` and the `POST` methods to the root of the app.
 
 ```js
 // GET method route
@@ -56,7 +56,7 @@ app.post('/', (req, res) => {
 Express supports methods that correspond to all HTTP request methods: `get`, `post`, and so on.
 For a full list, see [app.METHOD](/{{ page.lang }}/5x/api.html#app.METHOD).
 
-Hay un método de direccionamiento especial, `app.all()`, que no se deriva de ningún método HTTP. Este método se utiliza para cargar funciones de middleware en una vía de acceso para todos los métodos de solicitud. En el siguiente ejemplo, el manejador se ejecutará para las solicitudes a "/secret", tanto si utiliza GET, POST, PUT, DELETE, como cualquier otro método de solicitud HTTP soportado en el [módulo http](https://nodejs.org/api/http.html#http_http_methods).
+There is a special routing method, `app.all()`, used to load middleware functions at a path for _all_ HTTP request methods. For example, the following handler is executed for requests to the route `"/secret"` whether using `GET`, `POST`, `PUT`, `DELETE`, or any other HTTP request method supported in the [http module](https://nodejs.org/api/http.html#http_http_methods).
 
 ```js
 app.all('/secret', (req, res, next) => {
@@ -65,9 +65,9 @@ app.all('/secret', (req, res, next) => {
 })
 ```
 
-<h2 id="route-paths">Vías de acceso de ruta</h2>
+<h2 id="route-paths">Route paths</h2>
 
-Las vías de acceso de ruta, en combinación con un método de solicitud, definen los puntos finales en los que pueden realizarse las solicitudes. Las vías de acceso de ruta pueden ser series, patrones de serie o expresiones regulares.
+Route paths, in combination with a request method, define the endpoints at which requests can be made. Route paths can be strings, string patterns, or regular expressions.
 
 {% capture caution-character %} In express 5, the characters `?`, `+`, `*`, `[]`, and `()` are handled differently than in version 4, please review the [migration guide](/{{ page.lang }}/guide/migrating-5.html#path-syntax) for more information.{% endcapture %}
 
@@ -80,7 +80,7 @@ Las vías de acceso de ruta, en combinación con un método de solicitud, define
 
 {% capture note-path-to-regexp %}
 
-Express uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) for matching the route paths; see the path-to-regexp documentation for all the possibilities in defining route paths. [Express Route Tester](http://forbeslindesay.github.io/express-route-tester/) es una herramienta muy útil para probar rutas básicas de Express, aunque no da soporte a la coincidencia de patrones.
+Express uses [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) for matching the route paths; see the path-to-regexp documentation for all the possibilities in defining route paths. [Express Playground Router](https://bjohansebas.github.io/playground-router/) is a handy tool for testing basic Express routes, although it does not support pattern matching.
 
 {% endcapture %}
 
@@ -96,7 +96,7 @@ Query strings are not part of the route path.
 
 ### Route paths based on strings
 
-Esta vía de acceso de ruta coincidirá con las solicitudes a la ruta raíz, `/`.
+This route path will match requests to the root route, `/`.
 
 ```js
 app.get('/', (req, res) => {
@@ -104,7 +104,7 @@ app.get('/', (req, res) => {
 })
 ```
 
-Esta vía de acceso de ruta coincidirá con las solicitudes a `/about`.
+This route path will match requests to `/about`.
 
 ```js
 app.get('/about', (req, res) => {
@@ -112,7 +112,7 @@ app.get('/about', (req, res) => {
 })
 ```
 
-Esta vía de acceso de ruta coincidirá con las solicitudes a `/random.text`.
+This route path will match requests to `/random.text`.
 
 ```js
 app.get('/random.text', (req, res) => {
@@ -126,7 +126,7 @@ app.get('/random.text', (req, res) => {
 
 {% include admonitions/caution.html content=caution-string-patterns %}
 
-Esta vía de acceso de ruta coincidirá con `acd` y `abcd`.
+This route path will match `acd` and `abcd`.
 
 ```js
 app.get('/ab?cd', (req, res) => {
@@ -134,7 +134,7 @@ app.get('/ab?cd', (req, res) => {
 })
 ```
 
-Esta vía de acceso de ruta coincidirá con `abcd`, `abbcd`, `abbbcd`, etc.
+This route path will match `abcd`, `abbcd`, `abbbcd`, and so on.
 
 ```js
 app.get('/ab+cd', (req, res) => {
@@ -142,7 +142,7 @@ app.get('/ab+cd', (req, res) => {
 })
 ```
 
-Esta vía de acceso de ruta coincidirá con `abcd`, `abxcd`, `abRABDOMcd`, `ab123cd`, etc.
+This route path will match `abcd`, `abxcd`, `abRANDOMcd`, `ab123cd`, and so on.
 
 ```js
 app.get('/ab*cd', (req, res) => {
@@ -150,7 +150,7 @@ app.get('/ab*cd', (req, res) => {
 })
 ```
 
-Esta vía de acceso de ruta coincidirá con `/abe` y `/abcde`.
+This route path will match `/abe` and `/abcde`.
 
 ```js
 app.get('/ab(cd)?e', (req, res) => {
@@ -158,9 +158,9 @@ app.get('/ab(cd)?e', (req, res) => {
 })
 ```
 
-### Ejemplos de vías de acceso de ruta basadas en expresiones regulares:
+### Route paths based on regular expressions
 
-Esta vía de acceso de ruta coincidirá con cualquier valor con una "a" en el nombre de la ruta.
+This route path will match anything with an "a" in it.
 
 ```js
 app.get(/a/, (req, res) => {
@@ -168,7 +168,7 @@ app.get(/a/, (req, res) => {
 })
 ```
 
-Esta vía de acceso de ruta coincidirá con `butterfly` y `dragonfly`, pero no con `butterflyman`, `dragonfly man`, etc.
+This route path will match `butterfly` and `dragonfly`, but not `butterflyman`, `dragonflyman`, and so on.
 
 ```js
 app.get(/.*fly$/, (req, res) => {
@@ -243,11 +243,11 @@ In Express 4.x, <a href="https://github.com/expressjs/express/issues/2495">the `
 
 <h2 id="route-handlers">Route handlers</h2>
 
-Puede proporcionar varias funciones de devolución de llamada que se comportan como [middleware](/{{ page.lang }}/guide/using-middleware.html) para manejar una solicitud. La única excepción es que estas devoluciones de llamada pueden invocar `next('route')` para omitir el resto de las devoluciones de llamada de ruta. Puede utilizar este mecanismo para imponer condiciones previas en una ruta y, a continuación, pasar el control a las rutas posteriores si no hay motivo para continuar con la ruta actual.
+You can provide multiple callback functions that behave like [middleware](/{{ page.lang }}/guide/using-middleware.html) to handle a request. The only exception is that these callbacks might invoke `next('route')` to bypass the remaining route callbacks. You can use this mechanism to impose pre-conditions on a route, then pass control to subsequent routes if there's no reason to proceed with the current route.
 
-Los manejadores de rutas pueden tener la forma de una función, una matriz de funciones o combinaciones de ambas, como se muestra en los siguientes ejemplos.
+Route handlers can be in the form of a function, an array of functions, or combinations of both, as shown in the following examples.
 
-Una función de devolución de llamada individual puede manejar una ruta. For example:
+A single callback function can handle a route. For example:
 
 ```js
 app.get('/example/a', (req, res) => {
@@ -255,7 +255,7 @@ app.get('/example/a', (req, res) => {
 })
 ```
 
-Más de una función de devolución de llamada puede manejar una ruta (asegúrese de especificar el objeto `next`). For example:
+More than one callback function can handle a route (make sure you specify the `next` object). For example:
 
 ```js
 app.get('/example/b', (req, res, next) => {
@@ -266,7 +266,7 @@ app.get('/example/b', (req, res, next) => {
 })
 ```
 
-Una matriz de funciones de devolución de llamada puede manejar una ruta. For example:
+An array of callback functions can handle a route. For example:
 
 ```js
 const cb0 = function (req, res, next) {
@@ -286,7 +286,7 @@ const cb2 = function (req, res) {
 app.get('/example/c', [cb0, cb1, cb2])
 ```
 
-Una combinación de funciones independientes y matrices de funciones puede manejar una ruta. For example:
+A combination of independent functions and arrays of functions can handle a route. For example:
 
 ```js
 const cb0 = function (req, res, next) {
@@ -309,26 +309,26 @@ app.get('/example/d', [cb0, cb1], (req, res, next) => {
 
 <h2 id="response-methods">Response methods</h2>
 
-Los métodos en el objeto de respuesta (`res`) de la tabla siguiente pueden enviar una respuesta al cliente y terminar el ciclo de solicitud/respuestas. Si ninguno de estos métodos se invoca desde un manejador de rutas, la solicitud de cliente se dejará colgada.
+The methods on the response object (`res`) in the following table can send a response to the client, and terminate the request-response cycle. If none of these methods are called from a route handler, the client request will be left hanging.
 
-| Method                                                                                                                                                                                                                    | Description                                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| [res.download()](/{{ page.lang }}/4x/api.html#res.download)     | Solicita un archivo para descargarlo.                                                                         |
-| [res.end()](/{{ page.lang }}/4x/api.html#res.end)               | Finaliza el proceso de respuesta.                                                                             |
-| [res.json()](/{{ page.lang }}/4x/api.html#res.json)             | Envía una respuesta JSON.                                                                                     |
-| [res.jsonp()](/{{ page.lang }}/4x/api.html#res.jsonp)           | Send a JSON response with JSONP support.                                                                      |
-| [res.redirect()](/{{ page.lang }}/4x/api.html#res.redirect)     | Redirecciona una solicitud.                                                                                   |
-| [res.render()](/{{ page.lang }}/4x/api.html#res.render)         | Representa una plantilla de vista.                                                                            |
-| [res.send()](/{{ page.lang }}/4x/api.html#res.send)             | Envía una respuesta de varios tipos.                                                                          |
-| [res.sendFile()](/{{ page.lang }}/4x/api.html#res.sendFile)     | Envía un archivo como una secuencia de octetos.                                                               |
-| [res.sendStatus()](/{{ page.lang }}/4x/api.html#res.sendStatus) | Establece el código de estado de la respuesta y envía su representación de serie como el cuerpo de respuesta. |
+| Method                                                                                                                                                                                                                    | Description                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [res.download()](/{{ page.lang }}/5x/api.html#res.download)     | Prompt a file to be downloaded.                                                       |
+| [res.end()](/{{ page.lang }}/5x/api.html#res.end)               | End the response process.                                                             |
+| [res.json()](/{{ page.lang }}/5x/api.html#res.json)             | Send a JSON response.                                                                 |
+| [res.jsonp()](/{{ page.lang }}/5x/api.html#res.jsonp)           | Send a JSON response with JSONP support.                                              |
+| [res.redirect()](/{{ page.lang }}/5x/api.html#res.redirect)     | Redirect a request.                                                                   |
+| [res.render()](/{{ page.lang }}/5x/api.html#res.render)         | Render a view template.                                                               |
+| [res.send()](/{{ page.lang }}/5x/api.html#res.send)             | Send a response of various types.                                                     |
+| [res.sendFile()](/{{ page.lang }}/5x/api.html#res.sendFile)     | Send a file as an octet stream.                                                       |
+| [res.sendStatus()](/{{ page.lang }}/5x/api.html#res.sendStatus) | Set the response status code and send its string representation as the response body. |
 
 <h2 id="app-route">app.route()</h2>
 
-Puede crear manejadores de rutas encadenables para una vía de acceso de ruta utilizando `app.route()`.
-Como la vía de acceso se especifica en una única ubicación, la creación de rutas modulares es muy útil, al igual que la reducción de redundancia y errores tipográficos. Para obtener más información sobre las rutas, consulte: [Documentación de Router()](/{{ page.lang }}/4x/api.html#router).
+You can create chainable route handlers for a route path by using `app.route()`.
+Because the path is specified at a single location, creating modular routes is helpful, as is reducing redundancy and typos. For more information about routes, see: [Router() documentation](/{{ page.lang }}/5x/api.html#router).
 
-A continuación, se muestra un ejemplo de manejadores de rutas encadenados que se definen utilizando `app.route()`.
+Here is an example of chained route handlers that are defined by using `app.route()`.
 
 ```js
 app.route('/book')
@@ -345,11 +345,11 @@ app.route('/book')
 
 <h2 id="express-router">express.Router</h2>
 
-Utilice la clase `express.Router` para crear manejadores de rutas montables y modulares. Una instancia `Router` es un sistema de middleware y direccionamiento completo; por este motivo, a menudo se conoce como una "miniaplicación".
+Use the `express.Router` class to create modular, mountable route handlers. A `Router` instance is a complete middleware and routing system; for this reason, it is often referred to as a "mini-app".
 
-El siguiente ejemplo crea un direccionador como un módulo, carga una función de middleware en él, define algunas rutas y monta el módulo de direccionador en una vía de acceso en la aplicación principal.
+The following example creates a router as a module, loads a middleware function in it, defines some routes, and mounts the router module on a path in the main app.
 
-Cree un archivo de direccionador denominado `birds.js` en el directorio de la aplicación, con el siguiente contenido:
+Create a router file named `birds.js` in the app directory, with the following content:
 
 ```js
 const express = require('express')
@@ -374,7 +374,7 @@ router.get('/about', (req, res) => {
 module.exports = router
 ```
 
-A continuación, cargue el módulo de direccionador en la aplicación:
+Then, load the router module in the app:
 
 ```js
 const birds = require('./birds')
@@ -384,7 +384,7 @@ const birds = require('./birds')
 app.use('/birds', birds)
 ```
 
-La aplicación ahora podrá manejar solicitudes a `/birds` y `/birds/about`, así como invocar la función de middleware `timeLog` que es específica de la ruta.
+The app will now be able to handle requests to `/birds` and `/birds/about`, as well as call the `timeLog` middleware function that is specific to the route.
 
 But if the parent route `/birds` has path parameters, it will not be accessible by default from the sub-routes. To make it accessible, you will need to pass the `mergeParams` option to the Router constructor [reference](/{{ page.lang }}/5x/api.html#app.use).
 

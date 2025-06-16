@@ -1,17 +1,17 @@
 ---
 layout: page
-title: Desarrollo de motores de plantilla para Express
+title: Developing template engines for Express
 description: Learn how to develop custom template engines for Express.js using app.engine(), with examples on creating and integrating your own template rendering logic.
 menu: advanced
 lang: en
 redirect_from: "  "
 ---
 
-# Desarrollo de motores de plantilla para Express
+# Developing template engines for Express
 
-Utilice el método `app.engine(ext, callback)` para crear su propio motor de plantilla. `ext` hace referencia a la extensión de archivo y `callback` es la función de motor de plantilla, que acepta los siguientes elementos como parámetros: la ubicación del archivo, el objeto options y la función callback.
+Use the `app.engine(ext, callback)` method to create your own template engine. `ext` refers to the file extension, and `callback` is the template engine function, which accepts the following items as parameters: the location of the file, the options object, and the callback function.
 
-El siguiente código es un ejemplo de implementación de un motor de plantilla muy simple para la representación de archivos `.ntl`.
+The following code is an example of implementing a very simple template engine for rendering `.ntl` files.
 
 ```js
 const fs = require('fs') // this engine requires the fs module
@@ -29,14 +29,14 @@ app.set('views', './views') // specify the views directory
 app.set('view engine', 'ntl') // register the template engine
 ```
 
-La aplicación ahora podrá representar archivos `.ntl`. Cree un archivo denominado `index.ntl` en el directorio `views` con el siguiente contenido.
+Your app will now be able to render `.ntl` files. Create a file named `index.ntl` in the `views` directory with the following content.
 
 ```pug
 #title#
 #message#
 ```
 
-A continuación, cree la ruta siguiente en la aplicación.
+Then, create the following route in your app.
 
 ```js
 app.get('/', (req, res) => {
@@ -44,4 +44,4 @@ app.get('/', (req, res) => {
 })
 ```
 
-Cuando realice una solicitud a la página de inicio, `index.ntl` se representará como HTML.
+When you make a request to the home page, `index.ntl` will be rendered as HTML.

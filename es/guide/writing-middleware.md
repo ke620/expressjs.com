@@ -1,53 +1,53 @@
 ---
 layout: page
-title: Escritura de middleware para su uso en aplicaciones Express
+title: Writing middleware for use in Express apps
 description: Learn how to write custom middleware functions for Express.js applications, including examples and best practices for enhancing request and response handling.
 menu: guide
 lang: en
 redirect_from: "  "
 ---
 
-# Escritura de middleware para su uso en aplicaciones Express
+# Writing middleware for use in Express apps
 
 <h2>Overview</h2>
 
-Las funciones de _middleware_ son funciones que tienen acceso al [objeto de solicitud](/{{ page.lang }}/4x/api.html#req) (`req`), al [objeto de respuesta](/{{ page.lang }}/4x/api.html#res) (`res`) y a la siguiente función de middleware en el ciclo de solicitud/respuestas de la aplicación. La siguiente función de middleware se denota normalmente con una variable denominada `next`.
+_Middleware_ functions are functions that have access to the [request object](/{{ page.lang }}/4x/api.html#req) (`req`), the [response object](/{{ page.lang }}/4x/api.html#res) (`res`), and the `next` function in the application's request-response cycle. The `next` function is a function in the Express router which, when invoked, executes the middleware succeeding the current middleware.
 
-Las funciones de middleware pueden realizar las siguientes tareas:
+Middleware functions can perform the following tasks:
 
 - Execute any code.
-- Realizar cambios en la solicitud y los objetos de respuesta.
-- Finalizar el ciclo de solicitud/respuestas.
-- Invocar el siguiente middleware en la pila.
+- Make changes to the request and the response objects.
+- End the request-response cycle.
+- Call the next middleware in the stack.
 
-Si la función de middleware actual no finaliza el ciclo de solicitud/respuestas, debe invocar `next()` para pasar el control a la siguiente función de middleware. Otherwise, the request will be left hanging.
+If the current middleware function does not end the request-response cycle, it must call `next()` to pass control to the next middleware function. Otherwise, the request will be left hanging.
 
-El siguiente ejemplo muestra los elementos de una llamada a función de middleware:
+The following figure shows the elements of a middleware function call:
 
 <table id="mw-fig">
 <tbody><tr><td id="mw-fig-imgcell">
 <img src="/images/express-mw.png" alt="Elements of a middleware function call" id="mw-fig-img" />
 </td>
 <td class="mw-fig-callouts">
-<div class="callout" id="callout1">Método HTTP para el que se aplica la función de middleware.</div></tbody>
+<div class="callout" id="callout1">HTTP method for which the middleware function applies.</div></tbody>
 
-<div class="callout" id="callout2">Vía de acceso (ruta) para la que se aplica la función de middleware.</div>
+<div class="callout" id="callout2">Path (route) for which the middleware function applies.</div>
 
-<div class="callout" id="callout3">La función de middleware.</div>
+<div class="callout" id="callout3">The middleware function.</div>
 
-<div class="callout" id="callout4">Argumento de devolución de llamada a la función de middleware, denominado "next" por convención.</div>
+<div class="callout" id="callout4">Callback argument to the middleware function, called "next" by convention.</div>
 
-<div class="callout" id="callout5">Argumento de <a href="../4x/api.html#res">respuesta</a> HTTP a la función de middleware, denominado "res" por convención.</div>
+<div class="callout" id="callout5">HTTP <a href="/{{ page.lang }}/4x/api.html#res">response</a> argument to the middleware function, called "res" by convention.</div>
 
-<div class="callout" id="callout6">Argumento de <a href="../4x/api.html#req">solicitud</a> HTTP a la función de middleware, denominado "req" por convención.</div>
+<div class="callout" id="callout6">HTTP <a href="/{{ page.lang }}/4x/api.html#req">request</a> argument to the middleware function, called "req" by convention.</div>
 </td></tr>
 </table>
 
 Starting with Express 5, middleware functions that return a Promise will call `next(value)` when they reject or throw an error. `next` will be called with either the rejected value or the thrown Error.
 
-<h2><a name="redis"></a></h2>
+<h2>Example</h2>
 
-A continuación, se muestra un ejemplo de una aplicación Express simple, "Hello World", para la que definirá dos funciones de middleware:
+Here is an example of a simple "Hello World" Express application.
 The remainder of this article will define and add three middleware functions to the application:
 one called `myLogger` that prints a simple log message, one called `requestTime` that
 displays the timestamp of the HTTP request, and one called `validateCookies` that validates incoming cookies.
@@ -64,7 +64,7 @@ app.listen(3000)
 ```
 
 <h3>Middleware function myLogger</h3>
-Este es un ejemplo simple de una función de middleware denominada "myLogger". Esta función simplemente imprime "LOGGED" cuando una solicitud de la aplicación pasa por ella. La función de middleware se asigna a una variable denominada `myLogger`.
+Here is a simple example of a middleware function called "myLogger". This function just prints "LOGGED" when a request to the app passes through it. The middleware function is assigned to a variable named `myLogger`.
 
 ```js
 const myLogger = function (req, res, next) {
@@ -74,13 +74,13 @@ const myLogger = function (req, res, next) {
 ```
 
 <div class="doc-box doc-notice" markdown="1">
-Observe la llamada anterior a `next()`. La llamada a esta función invoca la siguiente función de middleware en la aplicación.
-La función `next()` no forma parte de la API de Express o Node.js, pero es el tercer argumento que se pasa a la función de middleware. La función `next()` puede tener cualquier nombre, pero por convención siempre se denomina "next".
-Para evitar confusiones, utilice siempre esta convención.
+Notice the call above to `next()`. Calling this function invokes the next middleware function in the app.
+The `next()` function is not a part of the Node.js or Express API, but is the third argument that is passed to the middleware function. The `next()` function could be named anything, but by convention it is always named "next".
+To avoid confusion, always use this convention.
 </div>
 
-Para cargar la función de middleware, llame a `app.use()`, especificando la función de middleware.
-Por ejemplo, el siguiente código carga la función de middleware `myLogger` antes de la ruta a la vía de acceso raíz (/).
+To load the middleware function, call `app.use()`, specifying the middleware function.
+For example, the following code loads the `myLogger` middleware function before the route to the root path (/).
 
 ```js
 const express = require('express')
@@ -102,15 +102,16 @@ app.listen(3000)
 
 Every time the app receives a request, it prints the message "LOGGED" to the terminal.
 
-El orden de carga del middleware es importante: las funciones de middleware que se cargan primero también se ejecutan primero.
+The order of middleware loading is important: middleware functions that are loaded first are also executed first.
 
-Si `myLogger` se carga después de la ruta a la vía de acceso raíz, la solicitud nunca la alcanza y la aplicación no imprime "LOGGED", ya que el manejador de rutas de la vía de acceso raíz determina el ciclo de solicitud/respuestas.
+If `myLogger` is loaded after the route to the root path, the request never reaches it and the app doesn't print "LOGGED", because the route handler of the root path terminates the request-response cycle.
 
-La función de middleware `myLogger` simplemente imprime un mensaje y, a continuación, pasa la solicitud a la siguiente función de middleware de la pila llamando a la función `next()`.
+The middleware function `myLogger` simply prints a message, then passes on the request to the next middleware function in the stack by calling the `next()` function.
 
 <h3>Middleware function requestTime</h3>
 
-El siguiente ejemplo añade una propiedad denominada `requestTime` al objeto de solicitud. Llamaremos a esta función de middleware "requestTime".
+Next, we'll create a middleware function called "requestTime" and add a property called `requestTime`
+to the request object.
 
 ```js
 const requestTime = function (req, res, next) {
@@ -119,7 +120,7 @@ const requestTime = function (req, res, next) {
 }
 ```
 
-The app now uses the `requestTime` middleware function. Asimismo, la función de devolución de llamada de la ruta de vía de acceso raíz utiliza la propiedad que la función de middleware añade a `req` (el objeto de solicitud).
+The app now uses the `requestTime` middleware function. Also, the callback function of the root path route uses the property that the middleware function adds to `req` (the request object).
 
 ```js
 const express = require('express')
@@ -141,7 +142,7 @@ app.get('/', (req, res) => {
 app.listen(3000)
 ```
 
-Cuando realiza una solicitud a la raíz de la aplicación, la aplicación ahora muestra la indicación de fecha y hora de la solicitud en el navegador.
+When you make a request to the root of the app, the app now displays the timestamp of your request in the browser.
 
 <h3>Middleware function validateCookies</h3>
 
@@ -189,9 +190,9 @@ app.listen(3000)
 Note how `next()` is called after `await cookieValidator(req.cookies)`. This ensures that if `cookieValidator` resolves, the next middleware in the stack will get called. If you pass anything to the `next()` function (except the string `'route'` or `'router'`), Express regards the current request as being an error and will skip any remaining non-error handling routing and middleware functions.
 </div>
 
-Como tiene acceso al objeto de solicitud, el objeto de respuesta, la siguiente función de middleware de la pila y toda la API de Node.js, las posibilidades con las funciones de middleware son ilimitadas.
+Because you have access to the request object, the response object, the next middleware function in the stack, and the whole Node.js API, the possibilities with middleware functions are endless.
 
-Para obtener más información sobre el middleware de Express, consulte: [Utilización del middleware de Express](/{{ page.lang }}/guide/using-middleware.html).
+For more information about Express middleware, see: [Using Express middleware](/{{ page.lang }}/guide/using-middleware.html).
 
 <h2>Configurable middleware</h2>
 

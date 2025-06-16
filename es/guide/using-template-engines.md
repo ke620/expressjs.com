@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Utilización de motores de plantilla con Express
+title: Using template engines with Express
 description: Discover how to integrate and use template engines like Pug, Handlebars, and EJS with Express.js to render dynamic HTML pages efficiently.
 menu: guide
 lang: en
 redirect_from: "  "
 ---
 
-# Utilización de motores de plantilla con Express
+# Using template engines with Express
 
 A _template engine_ enables you to use static template files in your application. At runtime, the template engine replaces
 variables in a template file with actual values, and transforms the template into an HTML file sent to the client.
@@ -17,11 +17,11 @@ The [Express application generator](/{{ page.lang }}/starter/generator.html) use
 
 To render template files, set the following [application setting properties](/{{ page.lang }}/4x/api.html#app.set), in the default `app.js` created by the generator:
 
-- `views`, el directorio donde se encuentran los archivos de plantilla. Ejemplo: `app.set('views', './views')`
+- `views`, the directory where the template files are located. Eg: `app.set('views', './views')`.
   This defaults to the `views` directory in the application root directory.
-- `view engine`, el motor de plantilla que se utiliza. Ejemplo: `app.set('view engine', 'pug')`
+- `view engine`, the template engine to use. For example, to use the Pug template engine: `app.set('view engine', 'pug')`.
 
-A continuación, instale el paquete npm de motor de plantilla correspondiente:
+Then install the corresponding template engine npm package; for example to install Pug:
 
 ```bash
 $ npm install pug --save
@@ -43,7 +43,7 @@ Express loads the module internally, for example:
 app.set('view engine', 'pug')
 ```
 
-Cree un archivo de plantilla Pug denominado `index.pug` en el directorio `views`, con el siguiente contenido:
+Then, create a Pug template file named `index.pug` in the `views` directory, with the following content:
 
 ```pug
 html
@@ -53,7 +53,8 @@ html
     h1= message
 ```
 
-A continuación, cree una ruta para representar el archivo `index.pug`. Si la propiedad `view engine` no se establece, debe especificar la extensión del archivo `view`. De lo contrario, puede omitirla.
+Create a route to render the `index.pug` file. If the `view engine` property is not set,
+you must specify the extension of the `view` file. Otherwise, you can omit it.
 
 ```js
 app.get('/', (req, res) => {
@@ -61,6 +62,6 @@ app.get('/', (req, res) => {
 })
 ```
 
-Cuando realice una solicitud a la página de inicio, el archivo `index.pug` se representará como HTML.
+When you make a request to the home page, the `index.pug` file will be rendered as HTML.
 
 The view engine cache does not cache the contents of the template's output, only the underlying template itself. The view is still re-rendered with every request even when the cache is on.

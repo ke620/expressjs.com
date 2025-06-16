@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Servicio de archivos estáticos en Express
+title: Serving static files in Express
 description: Understand how to serve static files like images, CSS, and JavaScript in Express.js applications using the built-in 'static' middleware.
 menu: starter
 lang: en
 redirect_from: "  "
 ---
 
-# Servicio de archivos estáticos en Express
+# Serving static files in Express
 
-Para el servicio de archivos estáticos como, por ejemplo, imágenes, archivos CSS y archivos JavaScript, utilice la función de middleware incorporado `express.static` de Express.
+To serve static files such as images, CSS files, and JavaScript files, use the `express.static` built-in middleware function in Express.
 
 The function signature is:
 
@@ -20,13 +20,13 @@ express.static(root, [options])
 The `root` argument specifies the root directory from which to serve static assets.
 For more information on the `options` argument, see [express.static](/{{page.lang}}/5x/api.html#express.static).
 
-Por ejemplo, utilice el siguiente código para el servicio de imágenes, archivos CSS y archivos JavaScript en un directorio denominado `public`:
+For example, use the following code to serve images, CSS files, and JavaScript files in a directory named `public`:
 
 ```js
 app.use(express.static('public'))
 ```
 
-Ahora, puede cargar los archivos que hay en el directorio `public`:
+Now, you can load the files that are in the `public` directory:
 
 ```text
 http://localhost:3000/images/kitten.jpg
@@ -37,17 +37,17 @@ http://localhost:3000/hello.html
 ```
 
 <div class="doc-box doc-info">
-Express busca los archivos relativos al directorio estático, por lo que el nombre del directorio estático no forma parte del URL.
+Express looks up the files relative to the static directory, so the name of the static directory is not part of the URL.
 </div>
 
-Para utilizar varios directorios de activos estáticos, invoque la función de middleware `express.static` varias veces:
+To use multiple static assets directories, call the `express.static` middleware function multiple times:
 
 ```js
 app.use(express.static('public'))
 app.use(express.static('files'))
 ```
 
-Express busca los archivos en el orden en el que se definen los directorios estáticos con la función de middleware `express.static`.
+Express looks up the files in the order in which you set the static directories with the `express.static` middleware function.
 
 {% capture alert_content %}
 For best results, [use a reverse proxy](/{{page.lang}}/advanced/best-practice-performance.html#use-a-reverse-proxy) cache to improve performance of serving static assets.
@@ -60,7 +60,7 @@ To create a virtual path prefix (where the path does not actually exist in the f
 app.use('/static', express.static('public'))
 ```
 
-Ahora, puede cargar los archivos que hay en el directorio `public` desde el prefijo de vía de acceso `/static`.
+Now, you can load the files that are in the `public` directory from the `/static` path prefix.
 
 ```text
 http://localhost:3000/static/images/kitten.jpg
@@ -70,7 +70,7 @@ http://localhost:3000/static/images/bg.png
 http://localhost:3000/static/hello.html
 ```
 
-No obstante, la vía de acceso que proporciona a la función `express.static` es relativa al directorio desde donde inicia el proceso `node`. Si ejecuta la aplicación Express desde cualquier otro directorio, es más seguro utilizar la vía de acceso absoluta del directorio al que desea dar servicio:
+However, the path that you provide to the `express.static` function is relative to the directory from where you launch your `node` process. If you run the express app from another directory, it's safer to use the absolute path of the directory that you want to serve:
 
 ```js
 const path = require('path')
