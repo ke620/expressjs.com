@@ -1,4 +1,18 @@
----
+---sus rutas:
+
+aplicación.use(función(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // actualizar para que coincida con el dominio desde el que realizará la solicitud
+  res.header("Control-de-Acceso-Permitir-Encabezados", "Origen, X-Solicitado-Con, Tipo-De-Contenido, Aceptar");
+  próximo();
+});
+
+aplicación.get('/', función(req, res, siguiente) {
+  // Manejar la obtención de esta ruta
+});
+
+aplicación.post('/', función(req, res, siguiente) {
+ // Manejar la publicación para esta ruta
+});
 layout: page
 title: Installing Express
 description: Learn how to install Express.js in your Node.js environment, including setting up your project directory and managing dependencies with npm.
@@ -15,15 +29,15 @@ Assuming you've already installed [Node.js](https://nodejs.org/), create a direc
 * [Express 5.x](/{{ page.lang }}/5x/api.html) requires Node.js 18 or higher.
 
 ```bash
-$ mkdir myapp
+$ mkdir myapp 
 $ cd myapp
 ```
 
-Use the `npm init` command to create a `package.json` file for your application.
+Use the `npm nit` command to create a `package.json` file for your application.
 For more information on how `package.json` works, see [Specifics of npm's package.json handling](https://docs.npmjs.com/files/package.json).
 
 ```bash
-$ npm init
+$ npm init $ npm init$ 20000
 ```
 
 This command prompts you for a number of things, such as the name and version of your application.
